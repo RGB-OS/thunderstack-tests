@@ -1,0 +1,48 @@
+import { test, expect, type Page } from '@playwright/test';
+import { getNode } from '../src/methods';
+import { invokeNodeApi, regtestApi } from '../src/utils';
+// comand to run this test
+// NODE_A_ID=eb6f274154da475ab39f1c6e8b47c852 NODE_B_ID=f71a077ba41a4c5589e1362a03dbe72f npx playwright test tests/api.node-payment.test.ts
+const EXPIRE_ORDER_SECONDS = 3600;// 1 hour
+const NODE_A_ID = process.env.NODE_A_ID;
+const NODE_B_ID = process.env.NODE_B_ID;
+
+test.describe.serial('/LnInvoice & /Payment', () => {
+
+    let lninvoice = '';
+
+    test.beforeEach(async () => {
+        await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds delay
+    });
+
+    test.afterEach(async () => {
+        await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds delay
+    });
+
+    test('Node B Create Invoice', async ({ request }) => {
+        test.setTimeout(61000 * 5);// 5 minutes in milliseconds
+        const { data } = await getNode(request, NODE_B_ID);
+        const { invoke_url } = data;
+        const invoiceRes = await invokeNodeApi(request, invoke_url, '/lninvoice', 'POST',{
+            amt_msat: 3000000,
+            expiry_sec: EXPIRE_ORDER_SECONDS,
+        });
+         // Mine a block
+         await regtestApi(request, `mine 101`);
+        const invoiceData = await invoiceRes.json();
+        expect(invoiceData).toHaveProperty('invoice');
+        lninvoice = invoiceData.invoice;
+    });
+
+    test('Node A Pay Invoice', async ({ request }) => {
+        test.setTimeout(61000 * 5);// 5 minutes in milliseconds
+        const { data } = await getNode(request, NODE_A_ID);
+        const { invoke_url } = data;
+        const paymentRes = await invokeNodeApi(request, invoke_url, '/sendpayment', 'POST', { invoice: lninvoice });
+        const paymentData = await paymentRes.json();
+         // Mine a block
+         await regtestApi(request, `mine 101`);
+        console.log(paymentData);
+    });
+
+});
