@@ -28,6 +28,9 @@ function loadEnvFiles() {
 // Call the function to load all `.env` files
 loadEnvFiles();
 
+const globalEnv = path.resolve(__dirname, '.env');
+dotenv.config({ path: globalEnv });
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
