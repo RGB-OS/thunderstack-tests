@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { getNode } from '../src/methods';
 import { invokeNodeApi, regtestApi } from '../src/utils';
 // comand to run this test
-//  NODE_NAME_A='' NODE_NAME_B=''  npx playwright test tests/api.node-payment.test.ts
+//  NODE_NAME_A='' NODE_NAME_B=''  npx playwright test tests/api.node-sendasset.test.ts
 const EXPIRE_ORDER_SECONDS = 3600;// 1 hour
 
 const NODE_NAME_A = process.env.NODE_NAME_A;
