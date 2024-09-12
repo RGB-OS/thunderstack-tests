@@ -79,7 +79,7 @@ export const destroyNode = async (request, nodeId) => {
 //     const data = await response.json();
 //     return data;
 // };
-export const buildOpenChannelPayload = ({peer_pubkey_and_opt_addr}, temporary_channel_id: string): any => {
+export const buildOpenChannelPayload = ({ peer_pubkey_and_opt_addr, asset_amount, asset_id }:any, temporary_channel_id: string): any => {
     return {
         capacity_sat: 100000,
         push_msat: 1394000,// default value
@@ -89,9 +89,9 @@ export const buildOpenChannelPayload = ({peer_pubkey_and_opt_addr}, temporary_ch
         fee_proportional_millionths: 0, // default value
         peer_pubkey_and_opt_addr: peer_pubkey_and_opt_addr,
         temporary_channel_id,
-        // ...(order.asset_amount && order.asset_id && {
-        //     asset_amount: order.asset_amount,
-        //     asset_id: order.asset_id,
-        // }),
+        ...(asset_amount && asset_id && {
+            asset_amount: asset_amount,
+            asset_id: asset_id,
+        }),
     };
 }

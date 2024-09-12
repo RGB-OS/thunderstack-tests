@@ -3,15 +3,17 @@ import { buildOpenChannelPayload, getNode, pollNodeApiTillNodeReady } from '../s
 import crypto from 'crypto';
 import { delay, invokeNodeApi, regtestApi } from '../src/utils';
 // comand to run this test
+// NODE_A_ID=eb6f274154da475ab39f1c6e8b47c852 NODE_B_ID=f71a077ba41a4c5589e1362a03dbe72f npx playwright test tests/api.node-openchannel.test.ts
 
-// NODE_NAME_A=Node_A NODE_NAME_B=Node_B npx playwright test tests/api.node-openchannel.test.ts
-
+// NODE_NAME_A='' NODE_NAME_B='' npx playwright test tests/api.node-openchannel_asset.test.ts
 
 const NODE_NAME_A = process.env.NODE_NAME_A;
 const NODE_NAME_B = process.env.NODE_NAME_B;
 
 const NODE_A_ID = process.env[`${NODE_NAME_A}_ID`];
-const NODE_B_ID = process.env[`${NODE_NAME_B}_ID`];;
+const NODE_B_ID = process.env[`${NODE_NAME_B}_ID`];
+const ASSET_ID = process.env[`${NODE_NAME_A}_ASSET_ID`];
+const asset_amount = 100;
 
 test.describe.serial('Open Channel Tests', () => {
     test.beforeEach(async () => {
@@ -42,7 +44,7 @@ test.describe.serial('Open Channel Tests', () => {
         const { pubkey } = await nodeRes.json();
         const peer_pubkey_and_opt_addr = `${pubkey}@${peerDNS}:${peerPort}`;
         const temporary_channel_id = crypto.createHash('sha256').update(crypto.randomBytes(32)).digest('hex');
-        const payload = buildOpenChannelPayload({ peer_pubkey_and_opt_addr }, temporary_channel_id)
+        const payload = buildOpenChannelPayload({ peer_pubkey_and_opt_addr,asset_id:ASSET_ID,asset_amount }, temporary_channel_id)
 
         // NODE A request
         const { data: dataA } = await getNode(request, NODE_A_ID);
