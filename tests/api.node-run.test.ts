@@ -3,7 +3,7 @@ import { createNode, pollGetNodeStatus, pollNodeApiTillNodeReady } from '../src/
 import { delay, invokeNodeApi, regtestApi } from '../src/utils';
 import { updateEnvFile } from '../writeEnvFile';
 // NODE_NAME=Node_B npx playwright test tests/api.node-run.test.ts   
-//NODE_NAME=Node_B npx playwright test tests/api.node-run.test.ts   
+//NODE_NAME=Node_A npx playwright test tests/api.node-run.test.ts   
 
 const NODE_NAME = process.env.NODE_NAME;
 test.describe.serial('API Tests', () => {

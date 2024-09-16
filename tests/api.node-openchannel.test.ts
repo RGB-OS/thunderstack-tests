@@ -42,7 +42,7 @@ test.describe.serial('Open Channel Tests', () => {
         const { pubkey } = await nodeRes.json();
         const peer_pubkey_and_opt_addr = `${pubkey}@${peerDNS}:${peerPort}`;
         const temporary_channel_id = crypto.createHash('sha256').update(crypto.randomBytes(32)).digest('hex');
-        const payload = buildOpenChannelPayload({ peer_pubkey_and_opt_addr:pubkey }, temporary_channel_id)
+        const payload = buildOpenChannelPayload({ peer_pubkey_and_opt_addr }, temporary_channel_id)
 
         // NODE A request
         const { data: dataA } = await getNode(request, NODE_A_ID);
