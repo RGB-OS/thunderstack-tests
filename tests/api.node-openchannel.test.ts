@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import { delay, invokeNodeApi, regtestApi } from '../src/utils';
 // comand to run this test
 
-// NODE_NAME_A=Node_A NODE_NAME_B=Node_B npx playwright test tests/api.node-openchannel.test.ts
+// NODE_NAME_A='Node_A' NODE_NAME_B='Node_B' npx playwright test tests/api.node-openchannel.test.ts
 
 
 const NODE_NAME_A = process.env.NODE_NAME_A;
@@ -42,7 +42,7 @@ test.describe.serial('Open Channel Tests', () => {
         const { pubkey } = await nodeRes.json();
         const peer_pubkey_and_opt_addr = `${pubkey}@${peerDNS}:${peerPort}`;
         const temporary_channel_id = crypto.createHash('sha256').update(crypto.randomBytes(32)).digest('hex');
-        const payload = buildOpenChannelPayload({ peer_pubkey_and_opt_addr }, temporary_channel_id)
+        const payload = buildOpenChannelPayload({ peer_pubkey_and_opt_addr:pubkey }, temporary_channel_id)
 
         // NODE A request
         const { data: dataA } = await getNode(request, NODE_A_ID);

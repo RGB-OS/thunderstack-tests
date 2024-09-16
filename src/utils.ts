@@ -3,7 +3,7 @@ export const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 export const invokeNodeApi = async (request, nodeApi, route, method = 'GET', body = {}) => {
     const userIdNodeIdPath = nodeApi.split('/nodes')[1];
     const url = `https://node-api.thunderstack.org${userIdNodeIdPath}${route}`;
-    console.log('NodeApi Call: ', url, Date.now());
+    console.log('NodeApi Call: ', url, body);
     const response = await request.fetch(url, {
         method: method,
         headers: {

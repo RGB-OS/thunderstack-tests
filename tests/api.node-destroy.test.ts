@@ -1,8 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 import { destroyNode, pollGetNodeStatus } from '../src/methods';
 // NODE_NAME=Node_B npx playwright test tests/api.node-run.test.ts   
-const NODE_ID = process.env.NODE_ID;
 
+const NODE_NAME = process.env.NODE_NAME;
+const NODE_ID = process.env[`${NODE_NAME}_ID`];
 test.describe.serial('Destroy Channel Tests', () => {
    test('Start Destoy Node flow', async ({ request }) => {
         const res = await destroyNode(request, NODE_ID);
