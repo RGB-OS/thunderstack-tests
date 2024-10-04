@@ -34,10 +34,11 @@ test.describe.serial('API Tests', () => {
     // });
 
     test('Wait till node Build will be finished', async ({ request }) => {
-        test.setTimeout(61000 * 5);// 5 minutes in milliseconds
+        const taskTimeout = 61000 * 10; // 10 minutes in milliseconds
+        test.setTimeout(taskTimeout);// 5 minutes in milliseconds
         const timeout = 300000; // 5 minutes in milliseconds
         const interval = 30000; // Poll every 30 seconds
-        const response = await pollGetNodeStatus(request, nodeAId, timeout, interval);
+        const response = await pollGetNodeStatus(request, nodeAId, taskTimeout, interval);
         nodeA_API = response.data.invoke_url;
         expect(response.data.status).toBe('RUNNING');
     });

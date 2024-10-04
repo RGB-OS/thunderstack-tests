@@ -22,7 +22,9 @@ test.describe.serial('Close Channel Tests', () => {
         await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds delay
     });
     test('Channel Exist /listchannel', async ({ request }) => {
+
         test.setTimeout(61000 * 5);// 5 minutes in milliseconds
+        console.log('NODE_A_ID', NODE_A_ID);
         const { data } = await getNode(request, NODE_A_ID);
         const { invoke_url } = data;
         const channelRes = await invokeNodeApi(request, invoke_url, 'listchannels', 'GET');
@@ -34,6 +36,7 @@ test.describe.serial('Close Channel Tests', () => {
         const { channel_id, peer_pubkey } = channelData.channels[0];
 
         const closeChannelRes = await invokeNodeApi(request, invoke_url, 'closechannel', 'POST', { channel_id, peer_pubkey, force: false });
+        await regtestApi(request, `mine 101`);
         expect(closeChannelRes.ok()).toBeTruthy();
 
     });
@@ -48,6 +51,32 @@ test.describe.serial('Close Channel Tests', () => {
         expect(channelData).toBeDefined();
         expect(channelData).toHaveProperty('channels');
         expect(channelData.channels.length).toBe(0);
+    });
+    test('Refresh payments', async ({ request }) => {
+        test.setTimeout(61000 * 5);// 5 minutes in milliseconds
+        const { data } = await getNode(request, NODE_A_ID);
+        const { data:dataB } = await getNode(request, NODE_B_ID);
+        const { invoke_url } = data;
+        const { invoke_url: invoke_urlB } = dataB;
+        await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST');
+        await regtestApi(request, `mine 50`);
+        await delay(10000);
+        await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST');
+        await delay(10000);
+        await regtestApi(request, `mine 50`);
+        await delay(10000);
+        await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST');
+        await regtestApi(request, `mine 50`);
+        await delay(10000);
+        await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST');
+        await regtestApi(request, `mine 50`);
+        await delay(10000);
+        
+        const channelRes = await invokeNodeApi(request, invoke_url, 'listpayments', 'GET');
+        const channelData = await channelRes.json();
+        expect(channelData).toBeDefined();
+        // expect(channelData).toHaveProperty('channels');
+        // expect(channelData.channels.length).toBe(0);
     });
 
 

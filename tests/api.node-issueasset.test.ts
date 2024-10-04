@@ -33,7 +33,8 @@ test.describe.serial('Create Asset', () => {
         const res = await invokeNodeApi(request, nodeApi, 'createutxos', 'post', {
             "up_to": false,
             "num": 4,
-            "size": 32500
+            "size": 32500,
+            "fee_rate": 4.2
         });
         expect(res.ok()).toBeTruthy();
         await regtestApi(request, `mine 30`);
