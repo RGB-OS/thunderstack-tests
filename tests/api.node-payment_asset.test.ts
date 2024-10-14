@@ -3,7 +3,7 @@ import { getNode } from '../src/methods';
 import { delay, invokeNodeApi, regtestApi } from '../src/utils';
 // comand to run this test
 // NODE_NAME_A='Node_A' NODE_NAME_B='Node_B' npx playwright test tests/api.node-payment_asset.test.ts
-const EXPIRE_ORDER_SECONDS = 3600;// 1 hour
+const EXPIRE_ORDER_SECONDS = 1800;// 1 hour
 
 const NODE_NAME_A = process.env.NODE_NAME_A;
 const NODE_NAME_B = process.env.NODE_NAME_B;

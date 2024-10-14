@@ -3,7 +3,7 @@ import { getNode } from '../src/methods';
 import { delay, invokeNodeApi, regtestApi } from '../src/utils';
 // comand to run this test
 // NODE_NAME_A='Node_A' NODE_NAME_B='Node_B' npx playwright test tests/api.node-payment.test.ts
-const EXPIRE_ORDER_SECONDS = 3600;// 1 hour
+const EXPIRE_ORDER_SECONDS = 1800;// 1 hour
 
 const NODE_NAME_A = process.env.NODE_NAME_A;
 const NODE_NAME_B = process.env.NODE_NAME_B;
@@ -15,7 +15,7 @@ console.log('NODE_A_ID',NODE_A_ID);
 console.log('NODE_B_ID',NODE_B_ID);
 test.describe.serial('/LnInvoice & /Payment', () => {
 
-    let lninvoice = 'lnbcrt30u1pn0l8k0dqud3jxktt5w46x7unfv9kz6mn0v3jsnp4qf0fuxpera2l63w5znnaf8wey8rhx7kwtcj26kkg2yzaqx47yfkd5pp5a5a054fuk09ynep0artxgvpgnvknsgg0g4h6jhjwry3rau6utd5ssp5ds4sq3fc2gwda3a6kfxg52m0706uqjx7j0rh7clqyqymq4j0q0aq9qyysgqcqpcxqrrss0qzz0f65vhmjurrasvdk28vyjyymddtvlt6tc4rwzlv008fymgr4jsgkt8gz7wahydnq88jg6tp9drh807wl52sgcem29l6um34dpnqqm2qzkh';
+    let lninvoice = '';
 
     test.beforeEach(async () => {
         await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds delay
@@ -25,21 +25,21 @@ test.describe.serial('/LnInvoice & /Payment', () => {
         await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds delay
     });
 
-    // test('Node B Create Invoice', async ({ request }) => {
-    //     test.setTimeout(61000 * 5);// 5 minutes in milliseconds
-    //     const { data } = await getNode(request, NODE_B_ID);
-    //     const { invoke_url } = data;
-    //     const invoiceRes = await invokeNodeApi(request, invoke_url, 'lninvoice', 'POST',{
-    //         amt_msat: 3000000,
-    //         expiry_sec: EXPIRE_ORDER_SECONDS,
-    //     });
-    //      // Mine a block
-    //      await regtestApi(request, `mine 101`);
-    //      await delay(10000);
-    //     const invoiceData = await invoiceRes.json();
-    //     expect(invoiceData).toHaveProperty('invoice');
-    //     lninvoice = invoiceData.invoice;
-    // });
+    test('Node B Create Invoice', async ({ request }) => {
+        test.setTimeout(61000 * 5);// 5 minutes in milliseconds
+        const { data } = await getNode(request, NODE_B_ID);
+        const { invoke_url } = data;
+        const invoiceRes = await invokeNodeApi(request, invoke_url, 'lninvoice', 'POST',{
+            amt_msat: 3000000,
+            expiry_sec: EXPIRE_ORDER_SECONDS,
+        });
+         // Mine a block
+         await regtestApi(request, `mine 101`);
+         await delay(10000);
+        const invoiceData = await invoiceRes.json();
+        expect(invoiceData).toHaveProperty('invoice');
+        lninvoice = invoiceData.invoice;
+    });
 
     test('Node A Pay Invoice', async ({ request }) => {
         test.setTimeout(61000 * 5);// 5 minutes in milliseconds
