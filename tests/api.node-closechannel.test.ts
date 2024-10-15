@@ -35,7 +35,7 @@ test.describe.serial('Close Channel Tests', () => {
 
         const { channel_id, peer_pubkey } = channelData.channels[0];
 
-        const closeChannelRes = await invokeNodeApi(request, invoke_url, 'closechannel', 'POST', { channel_id, peer_pubkey, force: false });
+        const closeChannelRes = await invokeNodeApi(request, invoke_url, 'closechannel', 'POST', { channel_id, peer_pubkey, force: true });
         await regtestApi(request, `mine 101`);
         expect(closeChannelRes.ok()).toBeTruthy();
 
