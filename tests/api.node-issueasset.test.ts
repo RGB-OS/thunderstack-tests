@@ -34,7 +34,8 @@ test.describe.serial('Create Asset', () => {
             "up_to": false,
             "num": 4,
             "size": 32500,
-            "fee_rate": 4.2
+            "fee_rate": 4.2,
+            "skip_sync": false
         });
         expect(res.ok()).toBeTruthy();
         await regtestApi(request, `mine 30`);

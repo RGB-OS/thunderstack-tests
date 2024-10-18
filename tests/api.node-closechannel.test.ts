@@ -55,28 +55,35 @@ test.describe.serial('Close Channel Tests', () => {
     test('Refresh payments', async ({ request }) => {
         test.setTimeout(61000 * 5);// 5 minutes in milliseconds
         const { data } = await getNode(request, NODE_A_ID);
-        const { data:dataB } = await getNode(request, NODE_B_ID);
+        const { data: dataB } = await getNode(request, NODE_B_ID);
         const { invoke_url } = data;
         const { invoke_url: invoke_urlB } = dataB;
-        await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST');
-        await regtestApi(request, `mine 50`);
-        await delay(10000);
-        await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST');
-        await delay(10000);
-        await regtestApi(request, `mine 50`);
-        await delay(10000);
-        await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST');
-        await regtestApi(request, `mine 50`);
-        await delay(10000);
-        await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST');
-        await regtestApi(request, `mine 50`);
-        await delay(10000);
-        
+        // await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST', {
+        //     "skip_sync": false
+        // });
+        // await regtestApi(request, `mine 50`);
+        // await delay(10000);
+        // await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST', {
+        //     "skip_sync": false
+        // });
+        // await delay(10000);
+        // await regtestApi(request, `mine 50`);
+        // await delay(10000);
+        // await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST', {
+        //     "skip_sync": false
+        // });
+        // await regtestApi(request, `mine 50`);
+        // await delay(10000);
+        // await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST', {
+        //     "skip_sync": false
+        // });
+        // await regtestApi(request, `mine 50`);
+        // await delay(10000);
+
         const channelRes = await invokeNodeApi(request, invoke_url, 'listpayments', 'GET');
         const channelData = await channelRes.json();
         expect(channelData).toBeDefined();
-        // expect(channelData).toHaveProperty('channels');
-        // expect(channelData.channels.length).toBe(0);
+
     });
 
 

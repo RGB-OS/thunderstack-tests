@@ -103,7 +103,7 @@ test.describe.serial('LSP Tests', () => {
         // Mine a block
         await regtestApi(request, `mine 101`);
         expect(channelDataA).toHaveProperty('temporary_channel_id');
-        await delay(20000);
+        await delay(50000);
 
     });
 
@@ -127,6 +127,7 @@ test.describe.serial('LSP Tests', () => {
         Node_A_payment_hash = paymentData.payment_hash;
         // Mine a block
         await regtestApi(request, `mine 101`);
+        await delay(20000);
     });
     test('Check if Node A Payment success', async ({ request }) => {
         test.setTimeout(61000 * 5);// 5 minutes in milliseconds

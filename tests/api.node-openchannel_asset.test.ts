@@ -6,7 +6,7 @@ import { delay, invokeNodeApi, regtestApi } from '../src/utils';
 // NODE_A_ID=eb6f274154da475ab39f1c6e8b47c852 NODE_B_ID=f71a077ba41a4c5589e1362a03dbe72f npx playwright test tests/api.node-openchannel.test.ts
 
 // NODE_NAME_A='Node_A' NODE_NAME_B='Node_B' npx playwright test tests/api.node-openchannel_asset.test.ts
-
+// rgb:$lh8frD2-U8$zfdz-WlnV!gj-royrH1d-gQjmrT6-vxEyS7s/RGB20Fixed/bcrt:utxob:V6SrFi30-sLOFdVT-9kh4Bc4-13vAshT-pcr9$YK-GaF!j6$-ISkru?expiry=1729260740&endpoints=rpc://regtest.thunderstack.org:3000/json-rpc
 const NODE_NAME_A = process.env.NODE_NAME_A;
 const NODE_NAME_B = process.env.NODE_NAME_B;
 

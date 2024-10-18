@@ -4,7 +4,14 @@ import { delay, invokeNodeApi, regtestApi } from '../src/utils';
 import { updateEnvFile } from '../writeEnvFile';
 // NODE_NAME=Node_B npx playwright test tests/api.node-run.test.ts   
 //NODE_NAME=Node_A npx playwright test tests/api.node-run.test.ts   
-
+const testNetwork = {
+    "bitcoind_rpc_username": "user",
+    "bitcoind_rpc_password": "password",
+    "bitcoind_rpc_host": "regtest.thunderstack.org",
+    "bitcoind_rpc_port": 18443,
+    "indexer_url": "regtest.thunderstack.org:50001",
+    "proxy_endpoint": "rpc://regtest.thunderstack.org:3000/json-rpc"
+}
 const NODE_NAME = process.env.NODE_NAME;
 test.describe.serial('API Tests', () => {
     let nodeAId = '';
@@ -24,14 +31,6 @@ test.describe.serial('API Tests', () => {
         nodeAId = data.data.node.nodeId;
         await updateEnvFile(NODE_NAME, `${NODE_NAME}_ID`, nodeAId);
     });
-    // test('Get a node', async ({ request }) => {
-    //     const data = await getNode(request, nodeAId);
-    //     console.log(data);
-    //     // console.log(data.data.invoke_url);
-
-    //     expect(data.data).toBeDefined();
-    //     expect(['IN_PROGRESS', 'RUNNING']).toContain(data.data.status);
-    // });
 
     test('Wait till node Build will be finished', async ({ request }) => {
         const taskTimeout = 61000 * 10; // 10 minutes in milliseconds
@@ -59,7 +58,7 @@ test.describe.serial('API Tests', () => {
     test('Unlock', async ({ request }) => {
         test.setTimeout(61000 * 5);// 5 minutes in milliseconds
         try {
-            const res = await invokeNodeApi(request, nodeA_API, 'unlock', 'POST', { password: '12345678' });
+            const res = await invokeNodeApi(request, nodeA_API, 'unlock', 'POST', { password: '12345678',...testNetwork });
             console.log(res);
         } catch (e) {
             console.log(e);
@@ -81,7 +80,9 @@ test.describe.serial('API Tests', () => {
         await regtestApi(request, `mine 15`);
     });
     test('Get Balance', async ({ request }) => {
-        const res = await invokeNodeApi(request, nodeA_API, 'btcbalance', 'GET', {});
+        const res = await invokeNodeApi(request, nodeA_API, 'btcbalance', 'POST', {
+            "skip_sync": false
+          });
         const data = await res.json();
         expect(data).toMatchObject({
             "vanilla": {
