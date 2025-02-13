@@ -6,6 +6,7 @@ import { updateEnvFile } from '../writeEnvFile';
 // comand to run this test
 // NODE_NAME=Node_A npx playwright test tests/api.node-issueasset.test.ts
 
+
 const NODE_NAME = process.env.NODE_NAME;
 const NODE_ID = process.env[`${NODE_NAME}_ID`];
 
@@ -32,7 +33,7 @@ test.describe.serial('Create Asset', () => {
         test.setTimeout(61000);// 5 minutes in milliseconds
         const res = await invokeNodeApi(request, nodeApi, 'createutxos', 'post', {
             "up_to": false,
-            "num": 4,
+            "num": 10,
             "size": 32500,
             "fee_rate": 4.2,
             "skip_sync": false

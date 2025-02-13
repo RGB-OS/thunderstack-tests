@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { getNode } from '../src/methods';
 import { invokeNodeApi, regtestApi } from '../src/utils';
 // comand to run this test
-//  NODE_NAME_A='' NODE_NAME_B=''  npx playwright test tests/api.node-sendasset.test.ts
+//  NODE_NAME_A='Node_A' NODE_NAME_B='Node_B' npx playwright test tests/api.node-sendasset.test.ts
 const EXPIRE_ORDER_SECONDS = 3600;// 1 hour
 
 const NODE_NAME_A = process.env.NODE_NAME_A;
@@ -41,6 +41,7 @@ test.describe.serial('Send Asset', () => {
         const invoiceRes = await invokeNodeApi(request, nodeB_API, 'rgbinvoice', 'POST', {
             "min_confirmations": 1,
             "asset_id": ASSET_ID,
+           
         });
         // Mine a block
         await regtestApi(request, `mine 101`);
@@ -56,6 +57,9 @@ test.describe.serial('Send Asset', () => {
         const decodedData = await decodedRes.json();
         const invoicePayload = {
             ...decodedData,
+            "amount": 100,
+            'skip_sync': false,
+            'fee_rate': 4.2,
             "donation": false,
             "min_confirmations": 1,
         }
@@ -69,7 +73,9 @@ test.describe.serial('Send Asset', () => {
     test('Node A /refreshtransfers', async ({ request }) => {
         test.setTimeout(61000);// 5 minutes in milliseconds
 
-        const res = await invokeNodeApi(request, nodeA_API, 'refreshtransfers', 'POST');
+        const res = await invokeNodeApi(request, nodeA_API, 'refreshtransfers', 'POST', {
+            "skip_sync": false
+        });
         expect(res.ok()).toBeTruthy();
 
         // Mine a block

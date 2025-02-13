@@ -1,9 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
-import { createNode, pollGetNodeStatus, pollNodeApiTillNodeReady } from '../src/methods';
+import { createNode, getNode, pollGetNodeStatus, pollNodeApiTillNodeReady } from '../src/methods';
 import { delay, invokeNodeApi, regtestApi } from '../src/utils';
 import { updateEnvFile } from '../writeEnvFile';
+
 // NODE_NAME=Node_B npx playwright test tests/api.node-run.test.ts   
 //NODE_NAME=Node_A npx playwright test tests/api.node-run.test.ts   
+//NODE_NAME=lsp_node npx playwright test tests/api.node-run.test.ts
+// d53b5491d4b54e81a1d998e38e74eb31 - startting
 const testNetwork = {
     "bitcoind_rpc_username": "user",
     "bitcoind_rpc_password": "password",
@@ -17,6 +20,7 @@ test.describe.serial('API Tests', () => {
     let nodeAId = '';
     let nodeA_BTCAddress = '';
     let nodeA_API = '';
+ 
     test.beforeEach(async () => {
         await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds delay
     });
@@ -39,6 +43,7 @@ test.describe.serial('API Tests', () => {
         const interval = 30000; // Poll every 30 seconds
         const response = await pollGetNodeStatus(request, nodeAId, taskTimeout, interval);
         nodeA_API = response.data.invoke_url;
+      
         expect(response.data.status).toBe('RUNNING');
     });
 
@@ -56,9 +61,12 @@ test.describe.serial('API Tests', () => {
         console.log(res);
     });
     test('Unlock', async ({ request }) => {
+        const { data } = await getNode(request, nodeAId);
+        const { peerDNS, peerPort, invoke_url } = data;
+        const peerUrl = `${peerDNS}:${peerPort}`;
         test.setTimeout(61000 * 5);// 5 minutes in milliseconds
         try {
-            const res = await invokeNodeApi(request, nodeA_API, 'unlock', 'POST', { password: '12345678',...testNetwork });
+            const res = await invokeNodeApi(request, nodeA_API, 'unlock', 'POST', { password: '12345678', announce_addresses: [peerUrl], announce_alias: nodeAId, ...testNetwork });
             console.log(res);
         } catch (e) {
             console.log(e);
@@ -82,7 +90,7 @@ test.describe.serial('API Tests', () => {
     test('Get Balance', async ({ request }) => {
         const res = await invokeNodeApi(request, nodeA_API, 'btcbalance', 'POST', {
             "skip_sync": false
-          });
+        });
         const data = await res.json();
         expect(data).toMatchObject({
             "vanilla": {
@@ -98,10 +106,4 @@ test.describe.serial('API Tests', () => {
         });
     });
 
-    // test('Destroy Node', async ({ request }) => {
-    //     const data = await destroyNode(request, nodeAId);
-    //     console.log(data);
-    //     expect(data.data).toBeDefined();
-    //     expect(data.data.status).toBe('DESTROYED');
-    // })
 });

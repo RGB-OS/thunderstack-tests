@@ -58,27 +58,27 @@ test.describe.serial('Close Channel Tests', () => {
         const { data: dataB } = await getNode(request, NODE_B_ID);
         const { invoke_url } = data;
         const { invoke_url: invoke_urlB } = dataB;
-        // await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST', {
-        //     "skip_sync": false
-        // });
-        // await regtestApi(request, `mine 50`);
-        // await delay(10000);
-        // await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST', {
-        //     "skip_sync": false
-        // });
-        // await delay(10000);
-        // await regtestApi(request, `mine 50`);
-        // await delay(10000);
-        // await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST', {
-        //     "skip_sync": false
-        // });
-        // await regtestApi(request, `mine 50`);
-        // await delay(10000);
-        // await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST', {
-        //     "skip_sync": false
-        // });
-        // await regtestApi(request, `mine 50`);
-        // await delay(10000);
+        await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST', {
+            "skip_sync": false
+        });
+        await regtestApi(request, `mine 50`);
+        await delay(10000);
+        await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST', {
+            "skip_sync": false
+        });
+        await delay(10000);
+        await regtestApi(request, `mine 50`);
+        await delay(10000);
+        await invokeNodeApi(request, invoke_url, 'refreshtransfers', 'POST', {
+            "skip_sync": false
+        });
+        await regtestApi(request, `mine 50`);
+        await delay(10000);
+        await invokeNodeApi(request, invoke_urlB, 'refreshtransfers', 'POST', {
+            "skip_sync": false
+        });
+        await regtestApi(request, `mine 50`);
+        await delay(10000);
 
         const channelRes = await invokeNodeApi(request, invoke_url, 'listpayments', 'GET');
         const channelData = await channelRes.json();

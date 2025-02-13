@@ -36,7 +36,7 @@ export const invokeLSPApi = async (request, route, method = 'GET', body = {}) =>
 };
 
 export const regtestApi = async (request, command) => {
-    const url = ` http://18.119.98.232:5000/execute`;
+    const url = `http://18.119.98.232:5000/execute`;
     const response = await request.fetch(url, {
         method: 'POST',
         headers: {

@@ -9,7 +9,11 @@ export const pollGetNodeStatus = async (request, nodeId, timeout, interval) => {
         const response = await getNode(request, nodeId);
         const status = response.data.status;
         if (status === 'RUNNING' || status === 'DESTROYED') {
-            return response;
+            const health = await healthCheck(request, nodeId);
+            const { peerDNS, peerPort } = response.data;
+            if (peerDNS && peerPort) {
+                return response;
+            }
         }
         await new Promise(resolve => setTimeout(resolve, interval));
     }
@@ -24,9 +28,11 @@ export const createNode = async (request, name) => {
         },
         data: {
             name: name,
+            network: 'regtest',
         },
     });
     const data = await response.json();
+    console.log(data);
     return data;
 };
 export const pollNodeApiTillNodeReady = async (request, nodeApi, route, timeout, interval) => {
@@ -47,6 +53,16 @@ export const pollNodeApiTillNodeReady = async (request, nodeApi, route, timeout,
 
 export const getNode = async (request, nodeId) => {
     const response = await request.get(cloudApi + '/nodes/' + nodeId, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': auth,
+        },
+    });
+    const data = await response.json();
+    return data;
+};
+export const healthCheck = async (request, nodeId) => {
+    const response = await request.get(`${cloudApi}/nodes/${nodeId}/health`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': auth,
@@ -79,7 +95,7 @@ export const destroyNode = async (request, nodeId) => {
 //     const data = await response.json();
 //     return data;
 // };
-export const buildOpenChannelPayload = ({ peer_pubkey_and_opt_addr, asset_amount, asset_id }:any, temporary_channel_id: string): any => {
+export const buildOpenChannelPayload = ({ peer_pubkey_and_opt_addr, asset_amount, asset_id }: any, temporary_channel_id: string): any => {
     return {
         capacity_sat: 30010,
         push_msat: 1394000,// default value
