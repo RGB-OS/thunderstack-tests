@@ -2,8 +2,8 @@ import { test, expect, type Page } from '@playwright/test';
 import { buildOpenChannelPayload, getNode, pollNodeApiTillNodeReady } from '../src/methods';
 import crypto from 'crypto';
 import { delay, invokeNodeApi, regtestApi } from '../src/utils';
-// comand to run this test
 
+// comand to run this test
 // NODE_NAME_A='Node_A' NODE_NAME_B='Node_B' npx playwright test tests/api.node-closechannel.test.ts
 
 
@@ -43,7 +43,7 @@ test.describe.serial('Close Channel Tests', () => {
 
 
     test('Check if /listchannel is empty', async ({ request }) => {
-        test.setTimeout(61000 * 5);// 5 minutes in milliseconds
+        test.setTimeout(61000 * 5);// 5 minutes
         const { data } = await getNode(request, NODE_A_ID);
         const { invoke_url } = data;
         const channelRes = await invokeNodeApi(request, invoke_url, 'listchannels', 'GET');
@@ -53,7 +53,7 @@ test.describe.serial('Close Channel Tests', () => {
         expect(channelData.channels.length).toBe(0);
     });
     test('Refresh payments', async ({ request }) => {
-        test.setTimeout(61000 * 5);// 5 minutes in milliseconds
+        test.setTimeout(61000 * 5);// 5 minutes
         const { data } = await getNode(request, NODE_A_ID);
         const { data: dataB } = await getNode(request, NODE_B_ID);
         const { invoke_url } = data;

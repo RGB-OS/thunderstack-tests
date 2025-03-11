@@ -62,7 +62,7 @@ test.describe.serial('API Tests', () => {
     });
     test('Unlock', async ({ request }) => {
         const { data } = await getNode(request, nodeAId);
-        const { peerDNS, peerPort, invoke_url } = data;
+        const { peerDNS, peerPort } = data;
         const peerUrl = `${peerDNS}:${peerPort}`;
         test.setTimeout(61000 * 5);// 5 minutes in milliseconds
         try {
@@ -72,8 +72,6 @@ test.describe.serial('API Tests', () => {
             console.log(e);
         }
         await delay(15000);
-        //expect(res.ok()).toBeTruthy();
-        // console.log(res);
     });
     test('get BTC Address', async ({ request }) => {
         const res = await invokeNodeApi(request, nodeA_API, 'address', 'POST', {});

@@ -69,6 +69,7 @@ test.describe.serial('Open Channel Tests', () => {
         expect(channelData).toBeDefined();
         expect(channelData).toHaveProperty('channels');
         expect(channelData.channels.length).toBeGreaterThan(0);
+        await regtestApi(request, `mine 101`);
     });
 
 });
