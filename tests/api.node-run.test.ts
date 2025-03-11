@@ -65,7 +65,7 @@ test.describe.serial('API Tests', () => {
         const peerUrl = `${peerDNS}:${peerPort}`;
         test.setTimeout(61000 * 5);// 5 minutes in milliseconds
         try {
-            const res = await unlockNode(request, nodeA_API, { password: nodePassword, announce_addresses: [peerUrl], announce_alias: nodeAId, network:testNetwork  });
+            const res = await unlockNode(request, nodeAId, { password: nodePassword, announce_addresses: [peerUrl], announce_alias: nodeAId, network:testNetwork ,node_endpoint:'https://node-api.thunderstack.org' });
             console.log(res);
         } catch (e) {
             console.log(e);
