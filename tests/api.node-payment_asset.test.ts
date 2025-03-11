@@ -14,8 +14,7 @@ const NODE_B_ID = process.env[`${NODE_NAME_B}_ID`];
 
 const ASSET_ID = process.env[`${NODE_NAME_A}_ASSET_ID`];
 const asset_amount = 100;
-console.log('NODE_A_ID',NODE_A_ID);
-console.log('NODE_B_ID',NODE_B_ID);
+
 test.describe.serial('/LnInvoice & /Payment', () => {
 
     let lninvoice = '';
@@ -54,7 +53,8 @@ test.describe.serial('/LnInvoice & /Payment', () => {
         const paymentData = await paymentRes.json();
          // Mine a block
          await regtestApi(request, `mine 101`);
-        // console.log(paymentData);
+         expect(paymentData).toBeDefined();
+        
     });
 
     test('Payments', async ({ request }) => {
@@ -63,9 +63,7 @@ test.describe.serial('/LnInvoice & /Payment', () => {
         const { invoke_url } = data;
         const paymentRes = await invokeNodeApi(request, invoke_url, 'listpayments', 'GET');
         const paymentData = await paymentRes.json();
-         // Mine a block
-        //  await regtestApi(request, `mine 101`);
-        // console.log(paymentData);
+        expect(paymentData).toBeDefined();
     });
 
 });

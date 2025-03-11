@@ -2,8 +2,8 @@ import { test, expect, type Page } from '@playwright/test';
 import { buildOpenChannelPayload, getNode, pollNodeApiTillNodeReady } from '../src/methods';
 import crypto from 'crypto';
 import { delay, invokeNodeApi, regtestApi } from '../src/utils';
-// comand to run this test
 
+// comand to run this test
 // NODE_NAME_A='Node_A' NODE_NAME_B='Node_B' npx playwright test tests/api.node-openchannel.test.ts
 
 

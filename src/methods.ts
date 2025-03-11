@@ -28,18 +28,27 @@ export const createNode = async (request, name) => {
         },
         data: {
             name: name,
-            network: 'regtest',
+            network: process.env.NETWORK,
         },
     });
     const data = await response.json();
-    console.log(data);
+    return data;
+};
+export const unlockNode = async (request, nodeId, body) => {
+    const response = await request.post(cloudApi + '/nodes' + nodeId + '/unlock', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': auth,
+        },
+        data: body,
+    });
+    const data = await response.json();
     return data;
 };
 export const pollNodeApiTillNodeReady = async (request, nodeApi, route, timeout, interval) => {
     const endTime = Date.now() + timeout;
 
     while (Date.now() < endTime) {
-        // try {
         const response = await invokeNodeApi(request, nodeApi, route);
         console.log(response.status());
         if (response.status() !== 500) {
@@ -85,16 +94,7 @@ export const destroyNode = async (request, nodeId) => {
     const data = await response.json();
     return data;
 };
-// const listNodes = async (request) => {
-//     const response = await request.get(cloudApi + '/nodes', {
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': auth,
-//         },
-//     });
-//     const data = await response.json();
-//     return data;
-// };
+
 export const buildOpenChannelPayload = ({ peer_pubkey_and_opt_addr, asset_amount, asset_id }: any, temporary_channel_id: string): any => {
     return {
         capacity_sat: 30010,
