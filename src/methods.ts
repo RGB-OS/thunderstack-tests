@@ -35,7 +35,7 @@ export const createNode = async (request, name) => {
     return data;
 };
 export const unlockNode = async (request, nodeId, body) => {
-    const response = await request.post(cloudApi + '/nodes' + nodeId + '/unlock', {
+    const response = await request.post(cloudApi + '/nodes/' + nodeId + '/unlock', {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': auth,
