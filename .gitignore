@@ -3,6 +3,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-node_envs/*
+# node_envs/*
 !.gitkeep
 .env
