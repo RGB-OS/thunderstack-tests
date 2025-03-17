@@ -25,13 +25,13 @@ test.describe.serial('API Tests', () => {
         await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds delay
     });
    
-    // test('Create Node', async ({ request }) => {
-        // const data = await createNode(request, NODE_NAME);
-        // expect(data.data.node).toBeDefined();
-        // expect(['IN_PROGRESS', 'RUNNING']).toContain(data.data.node.status);
-        // nodeAId = data.data.node.nodeId;
-        // await updateEnvFile(NODE_NAME, `${NODE_NAME}_ID`, nodeAId);
-    // });
+    test('Create Node', async ({ request }) => {
+        const data = await createNode(request, NODE_NAME);
+        expect(data.data.node).toBeDefined();
+        expect(['IN_PROGRESS', 'RUNNING']).toContain(data.data.node.status);
+        nodeAId = data.data.node.nodeId;
+        await updateEnvFile(NODE_NAME, `${NODE_NAME}_ID`, nodeAId);
+    });
 
     test('Wait till node Build will be finished', async ({ request }) => {
         const taskTimeout = 61000 * 10; // 10 minutes in milliseconds
