@@ -11,6 +11,8 @@ const NODE_NAME = process.env.NODE_NAME;
 const NODE_ID = process.env[`${NODE_NAME}_ID`];
 
 test.describe.serial('Create Asset', () => {
+    console.log(NODE_NAME);
+    console.log(process.env);
     const assetAmount = 1000;
     const assetName = 'USDT';
     let asset_id = '';
@@ -25,8 +27,10 @@ test.describe.serial('Create Asset', () => {
 
     test('get Node', async ({ request }) => {
         const { data } = await getNode(request, NODE_ID);
+        console.log(data);
         const { invoke_url } = data;
         nodeApi = invoke_url;
+        invoke_url.test
     });
 
     test('call if /createutxos', async ({ request }) => {
