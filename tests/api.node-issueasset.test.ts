@@ -35,7 +35,7 @@ test.describe.serial('Create Asset', () => {
             "up_to": false,
             "num": 10,
             "size": 32500,
-            "fee_rate": 4.2,
+            "fee_rate": 5,
             "skip_sync": false
         });
         expect(res.ok()).toBeTruthy();
