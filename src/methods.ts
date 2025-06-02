@@ -97,7 +97,7 @@ export const destroyNode = async (request, nodeId) => {
 
 export const buildOpenChannelPayload = ({ peer_pubkey_and_opt_addr, asset_amount, asset_id }: any, temporary_channel_id: string): any => {
     return {
-        capacity_sat: 30010,
+        capacity_sat: 100_000,
         push_msat: 0,// default value
         public: true,// default value
         with_anchors: true,// default value
